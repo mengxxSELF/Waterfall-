@@ -10,8 +10,7 @@
         li{list-style: none;margin-bottom: 10px;background: url("imgs/default.gif") no-repeat center #cccccc }
         li,img{width:200px;border-radius: 10px;}
         a{width:80px;line-height:80px;background: skyblue;color:#fff; position: fixed;
-        right: 10px;bottom: 10px; text-align: center; border-radius: 100%; display: block;
-
+        right: 10px;bottom: 10px; text-align: center; border-radius: 100%; display:none;
         }
     </style>
 </head>
@@ -28,7 +27,9 @@
 <script>
 // 需求 图片延迟加载 瀑布流  回顶部
     var aul = document.getElementsByTagName('ul')
-    var aimg = document.getElementsByTagName('img')
+    var aBtn = document.getElementsByTagName('a')[0]
+    var aimg = document.getElementsByTagName('img');
+    var flag =null;
 //    1 瀑布流效果 加载新数据
     // 创建li [给入随机高度和img] 将其放入最短ul【sort 排序】 当满足条件之后 重新创建li
     var createLi = (function () {
@@ -70,22 +71,40 @@
         }
         return arguments.callee;
     })()
-//    3 回到顶部 立即停止
+//    3 回到顶部   立即停止
+    aBtn.onclick = function () {
+        aBtn.timer =setInterval(backTop,30);
+    }
+    function backTop(){
+        if(utils.win('scrollTop')<=0){
+            clearInterval(aBtn.timer)
+        }
+        utils.win('scrollTop',utils.win('scrollTop')-30);
+        flag =true;
+
+    }
 
 
 
-    // 在滚轮时候 触发1 加载新li 2 图片延迟加载
+
+    // 在滚轮时候 触发1 加载新li 2 图片延迟加载 3 关于返回顶部
     window.onscroll = function () {
+        if(flag){return};
+        flag =true;
         var scrollH = utils.win('scrollTop');
         var screenH= utils.win('clientHeight');
         var bodyH = scrollH+screenH;
         var docuH = document.body.scrollHeight;
-        lazyImg();
+        lazyImg();// 图片延迟加载
         if(bodyH>docuH-100){
             createLi(); // 加载新Li
         }
-
-
+        // 关于返回顶部
+        if(scrollH>screenH){
+            aBtn.style.display = 'block'
+        }else{
+            aBtn.style.display = 'none'
+        }
     }
 
 </script>
