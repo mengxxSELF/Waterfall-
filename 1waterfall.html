@@ -76,12 +76,11 @@
         aBtn.timer =setInterval(backTop,30);
     }
     function backTop(){
+        flag=false;
         if(utils.win('scrollTop')<=0){
             clearInterval(aBtn.timer)
         }
         utils.win('scrollTop',utils.win('scrollTop')-30);
-        flag =true;
-
     }
 
 
@@ -89,12 +88,14 @@
 
     // 在滚轮时候 触发1 加载新li 2 图片延迟加载 3 关于返回顶部
     window.onscroll = function () {
-        if(flag){return};
-        flag =true;
+        if(flag){
+            clearInterval(aBtn.timer)
+        }
+        flag=true;
         var scrollH = utils.win('scrollTop');
         var screenH= utils.win('clientHeight');
         var bodyH = scrollH+screenH;
-        var docuH = document.body.scrollHeight;
+        var docuH = document.body.offsetHeight;
         lazyImg();// 图片延迟加载
         if(bodyH>docuH-100){
             createLi(); // 加载新Li
