@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片延迟加载</title>
+    <style>
+        *{padding:0;margin:0;}
+        div{margin:0 auto;width: 1100px;overflow: hidden;}
+        ul{width:200px;margin:0 10px;float: left;}
+        li{list-style: none;margin-bottom: 10px;background: url("imgs/default.gif") no-repeat center #cccccc }
+        li,img{width:200px;border-radius: 10px;}
+        a{width:80px;line-height:80px;background: skyblue;color:#fff; position: fixed;
+        right: 10px;bottom: 10px; text-align: center; border-radius: 100%; display: block;
+
+        }
+    </style>
+</head>
+<body>
+<div>
+    <ul></ul>
+    <ul></ul>
+    <ul></ul>
+    <ul></ul>
+    <ul></ul>
+</div>
+<a href="javascript:;">back</a>
+<script src="js/utils.js"></script>
+<script>
+// 需求 图片延迟加载 瀑布流  回顶部
+    var aul = document.getElementsByTagName('ul')
+    var aimg = document.getElementsByTagName('img')
+//    1 瀑布流效果 加载新数据
+    // 创建li [给入随机高度和img] 将其放入最短ul【sort 排序】 当满足条件之后 重新创建li
+    var createLi = (function () {
+        for(var i=0;i<40;i++){
+            var newLi = document.createElement('li');
+            newLi.innerHTML = '<img realImg="imgs/'+utils.rnd(1,17)+'.jpg" alt=""/>'
+            utils.css(newLi,{ height: utils.rnd(100,200)  });
+
+            var domAry = utils.makeArray(aul)
+            domAry.sort(function (a,b) {
+                return a.scrollHeight- b.scrollHeight;
+            })
+            domAry[0].appendChild(newLi);
+        }
+        return arguments.callee;
+    })()
+//    2 图片延迟加载  创建 赋值 校验 优化
+    var lazyImg =(function () {
+        // 判断图片延迟加载条件
+        for(var i=0;i<aimg.length;i++){
+            (function (index) {
+                if(aimg[index].flag) return;
+                var scrollH = utils.win('scrollTop');
+                var screenH= utils.win('clientHeight');
+                var bodyH = scrollH+screenH;
+                var imgPos = utils.offset(aimg[index]).top;
+                if(bodyH>imgPos){
+                    var oimg = new Image();
+                    oimg.src=aimg[index].getAttribute('realImg')
+                    oimg.onload = function () {
+                        aimg[index].src=this.src;
+                        oimg=null;
+                        // 高度设置
+                        utils.css(aimg[index].parentNode,{height:aimg[index].offsetHeight})
+                        aimg[index].flag =true;
+                    }
+                }
+            })(i)
+        }
+        return arguments.callee;
+    })()
+//    3 回到顶部 立即停止
+
+
+
+    // 在滚轮时候 触发1 加载新li 2 图片延迟加载
+    window.onscroll = function () {
+        var scrollH = utils.win('scrollTop');
+        var screenH= utils.win('clientHeight');
+        var bodyH = scrollH+screenH;
+        var docuH = document.body.scrollHeight;
+        lazyImg();
+        if(bodyH>docuH-100){
+            createLi(); // 加载新Li
+        }
+
+
+    }
+
+</script>
+</body>
+</html>
