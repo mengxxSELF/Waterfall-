@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>瀑布流</title>
+    <title>瀑布流 es6+jq</title>
     <style>
         *{padding:0;margin:0;}
         div{margin:0 auto;width: 1100px;overflow: hidden;}
@@ -17,9 +17,7 @@
 </head>
 <body>
 <div>
-    <ul>
-
-    </ul>
+    <ul></ul>
     <ul></ul>
     <ul></ul>
     <ul></ul>
@@ -27,11 +25,11 @@
 </div>
 <a href="javascript:;" class="back">back</a>
 <script src="js/utils.js"></script>
-<script src="js/waterf1.0.js"></script>
+<script src="js/jquery.3.0.0.min.js"></script>
+<script src="js/waterf2.0.js"></script>
 <script>
-    var oBox = document.getElementsByTagName('div')[0];
     new Water({
-        el:oBox
+        el:$('div')
     })
 </script>
 </body>
