@@ -13,13 +13,11 @@
 
 [在线效果展示](http://www.webmxx.com/dest/JSTEST/Waterfall-/2waterfall.html)
 
-[核心JS代码展示](https://github.com/mengxxSELF/Waterfall-/blob/master/2waterfall.html)
-
+[核心JS代码展示](https://github.com/mengxxSELF/Waterfall-/blob/master/js/waterf1.0.js)
 
 ### 2 图片瀑布流 es6+jq
 [在线效果展示](http://www.webmxx.com/dest/JSTEST/Waterfall-/3waterfall.html)
 
-[核心JS代码展示](https://github.com/mengxxSELF/Waterfall-/blob/master/3waterfall.html)
-
+[核心JS代码展示](https://github.com/mengxxSELF/Waterfall-/blob/master/js/waterf2.0.js)
 
 
